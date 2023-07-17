@@ -127,6 +127,7 @@ export class PanZoom extends React.Component /* React.Component<Props,State> */ 
     disabled: false,
     minZoom: 0,
     maxZoom: Infinity,
+    minZoomForScroll: 0,
     noStateUpdate: true,
     boundaryRatioVertical: 0.8,
     boundaryRatioHorizontal: 0.8,
@@ -380,7 +381,8 @@ export class PanZoom extends React.Component /* React.Component<Props,State> */ 
 
     this.ctrlKeyPressed = e.ctrlKey
     const isPinchGesture = this.ctrlKeyPressed && !Number.isInteger(dy)
-    const isWithinScrollable = getComputedStyle(e.target).getPropertyValue("--scrollable")
+    const isAllowedToScroll = this.state.scale >= this.props.minZoomForScroll
+    const isWithinScrollable = getComputedStyle(e.target).getPropertyValue("--scrollable") && isAllowedToScroll
     const isHorizontalPan = (Object.is(0, dy) || Object.is(-0, dy)) && !Object.is(0, dx) 
 
     if (debug) {
@@ -1019,6 +1021,7 @@ export class PanZoom extends React.Component /* React.Component<Props,State> */ 
       hasNaturalScroll,
       normalizeConfig,
       debug,
+      minZoomForScroll,
       ...restPassThroughProps
     } = this.props
     const { x, y, scale, angle } = this.state
