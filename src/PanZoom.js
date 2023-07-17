@@ -382,7 +382,7 @@ export class PanZoom extends React.Component /* React.Component<Props,State> */ 
     this.ctrlKeyPressed = e.ctrlKey
     const isPinchGesture = this.ctrlKeyPressed && !Number.isInteger(dy)
     const isAllowedToScroll = this.state.scale >= this.props.minZoomForScroll
-    const isWithinScrollable = getComputedStyle(e.target).getPropertyValue("--scrollable") && isAllowedToScroll
+    const isWithinScrollable = getComputedStyle(e.target).getPropertyValue("--scrollable")
     const isHorizontalPan = (Object.is(0, dy) || Object.is(-0, dy)) && !Object.is(0, dx) 
 
     if (debug) {
@@ -403,7 +403,7 @@ export class PanZoom extends React.Component /* React.Component<Props,State> */ 
         if (isWithinScrollable) {
           e.preventDefault()
 
-          if (!isHorizontalPan) {
+          if (!isHorizontalPan && isAllowedToScroll) {
             this.wheelContainerScrolling = true
             this.prevScrollEventTimeStamp = e.timeStamp
           }
@@ -424,7 +424,7 @@ export class PanZoom extends React.Component /* React.Component<Props,State> */ 
       const diffTime = Math.abs(e.timeStamp - this.prevScrollEventTimeStamp)
       const isSimilarDirection = isSimilar2DVector(this.prevNormalizedEvent, normalizedEvent)
       const isTimedOut = diffTime >= this.normalizeConfig.wheelScrollSwapTimeout
-      const isTryingPan = (isHorizontalPan || !isWithinScrollable) && e.cancelable
+      const isTryingPan = (isHorizontalPan || !isWithinScrollable || !isAllowedToScroll) && e.cancelable
       if ((isTimedOut && (!isSimilarDirection || isTryingPan))) {
         this.wheelContainerScrolling = false
         this.prevScrollEventTimeStamp = null
@@ -454,6 +454,7 @@ export class PanZoom extends React.Component /* React.Component<Props,State> */ 
       && !this.wheelZooming
       && !this.wheelPanning
       && isWithinScrollable
+      && isAllowedToScroll
       && !isHorizontalPan) {
       this.wheelContainerScrolling = true
       this.prevScrollEventTimeStamp = e.timeStamp
