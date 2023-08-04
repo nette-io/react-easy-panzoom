@@ -22,7 +22,7 @@
     "coverage": "jest --coverage",
     "flow": "flow",
     "build:cjs": "cross-env NODE_ENV=production babel --config-file ./babel.config.js ./src --out-dir ./lib --ignore \"**/*.test.js\"",
-    "prepare": "npm run build:cjs"
+    "prepare": "npm run lib"
   },
   "files": [
     "*.md",
