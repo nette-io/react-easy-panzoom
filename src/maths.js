@@ -1,4 +1,3 @@
-/*::
 export type TransformationMatrix = {
   a: number,
   b: number,
@@ -7,43 +6,27 @@ export type TransformationMatrix = {
   x: number,
   y: number,
 }
-*/
-
-/*::
 export type BoundingBox = {
   top: number,
   left: number,
   width: number,
   height: number,
 }
-*/
-
-/*::
 export type BoundaryRatio = {
   vertical: number,
   horizontal: number,
 }
-*/
-
-/*::
 export type Coordinates = {
   x: number,
   y: number,
 }
-*/
-
-/*::
 export type BoundCoordinates = { boundX: number, boundY: number, offsetX: number, offsetY: number }
-*/
-
-/*::
 export type TransformationParameters = {
   angle: number,
   scale: number,
   offsetX: number,
   offsetY: number,
 }
-*/
 
 export const ZOOM_SPEED_MULTIPLIER = 0.065
 
@@ -52,7 +35,7 @@ export const ZOOM_SPEED_MULTIPLIER = 0.065
 // ( a , c, x )
 // ( b , d, y )
 // ( 0 , 0, 1 )
-export const TransformMatrix = (transformationParameters /*: TransformationParameters */, centerCoordinates /*: Coordinates */, ) /*: TransformationMatrix */ => {
+export const TransformMatrix = (transformationParameters: TransformationParameters, centerCoordinates: Coordinates, ) : TransformationMatrix => {
   const { angle, scale, offsetX, offsetY } = transformationParameters
   const { x: centerX, y: centerY } = centerCoordinates
   const theta = angle * Math.PI / 180
@@ -65,7 +48,7 @@ export const TransformMatrix = (transformationParameters /*: TransformationParam
   return { a, b, c, d, x : transformX + offsetX, y: transformY + offsetY }
 }
 
-const applyTransformMatrix = (transformationParameters /*: TransformationParameters */, centerCoordinates /*: Coordinates */) => (x, y) /*: [number, number] */ => {
+const applyTransformMatrix = (transformationParameters: TransformationParameters, centerCoordinates: Coordinates) => (x, y): [number, number] => {
   const { a, b, c, d, x: transformX, y: transformY } = TransformMatrix(transformationParameters, centerCoordinates)
   return [
     x * a + y * c + transformX,
@@ -73,7 +56,7 @@ const applyTransformMatrix = (transformationParameters /*: TransformationParamet
   ]
 }
 
-export const getTransformedBoundingBox = (transformationParameters /*: TransformationParameters */, boundingBox /*: BoundingBox */) /*: BoundingBox */ => {
+export const getTransformedBoundingBox = (transformationParameters: TransformationParameters, boundingBox: BoundingBox) : BoundingBox => {
   const { top, left, width, height } = boundingBox
   const center = {
     x: width / 2,
@@ -95,7 +78,7 @@ export const getTransformedBoundingBox = (transformationParameters /*: Transform
   }
 }
 
-export const getScaleMultiplier = (delta /*: number */, zoomSpeed /*: number */ = 1) /*: number */ => {
+export const getScaleMultiplier = (delta: number, zoomSpeed: number = 1) : number => {
   let speed = ZOOM_SPEED_MULTIPLIER * zoomSpeed
   let scaleMultiplier = 1
   if (delta > 0) { // zoom out
@@ -108,11 +91,11 @@ export const getScaleMultiplier = (delta /*: number */, zoomSpeed /*: number */ 
 }
 
 export const boundCoordinates = (
-  x /*: number */, y /*: number */,
-  boundaryRatio /*: BoundaryRatio */,
-  boundingBox /*: BoundingBox */,
-  containerHeight /*: number */, containerWidth /*: number */,
-  offsetX /*?: number */ = 0, offsetY /*?: number */ = 0) /*: BoundCoordinates */ => {
+  x: number, y: number,
+  boundaryRatio: BoundaryRatio,
+  boundingBox: BoundingBox,
+  containerHeight: number, containerWidth: number,
+  offsetX?: number = 0, offsetY?: number = 0) : BoundCoordinates => {
 
   const { top, left, width, height } = boundingBox
   // check that computed are inside boundaries otherwise set to the bounding box limits
