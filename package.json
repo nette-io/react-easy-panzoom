@@ -2,7 +2,7 @@
   "name": "react-easy-panzoom",
   "version": "0.8.0",
   "description": "Wrapper to enable pan and zoom for any React component",
-  "main": "./src/index.js",
+  "main": "./lib/index.js",
   "author": "mnogueron",
   "homepage": "https://mnogueron.github.io/react-easy-panzoom",
   "repository": {
@@ -21,7 +21,8 @@
     "test": "jest",
     "coverage": "jest --coverage",
     "flow": "flow",
-    "build:cjs": "cross-env NODE_ENV=production babel --config-file ./babel.config.js ./src --out-dir ./lib --ignore \"**/*.test.js\""
+    "build:cjs": "cross-env NODE_ENV=production babel --config-file ./babel.config.js ./src --out-dir ./lib --ignore \"**/*.test.js\"",
+    "prepare": "npm run lib"
   },
   "files": [
     "*.md",
